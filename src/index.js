@@ -4,8 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+
 ReactDOM.render(
   <React.StrictMode>
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
     <App />
   </React.StrictMode>,
   document.getElementById('root')

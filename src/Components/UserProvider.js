@@ -3,18 +3,22 @@ import UserContext from "./UserContext";
 
 const UserProvider = ({children}) =>{
 
-    const [user, setUser] = useState({id:0,email: "", fullName:"", auth: false});
+    const [user, setUser] = useState({id:0,email: "", fullName:"", address:"", avatar:"", roles: [{}], auth: false});
 
     useEffect(()=>{
         profile();
     },[]);
 
-    const login = (id,email, fullName) =>{
+    const login = (id,email, fullName, address,phoneNumber, avatar, roles) =>{
 
         setUser((user)=>({
             id:id,
             email: email,
             fullName: fullName,
+            address: address,
+            phoneNumber: phoneNumber,
+            avatar: avatar,
+            roles: roles,
             auth: true
         }));
 
@@ -36,7 +40,7 @@ const UserProvider = ({children}) =>{
             if(response.status==200){
                 let res = await response.json();
 
-                login(res.id,res.email,res.fullName);
+                login(res.id,res.email,res.fullName,res.address, res.phoneNumber, res.avatar, res.roles);
 
             }
         }
@@ -45,6 +49,10 @@ const UserProvider = ({children}) =>{
         setUser((user)=>({
             email: "",
             fullName: "",
+            address: "",
+            phoneNumber: "",
+            avatar: "",
+            roles:[{}],
             auth: false
         }));
     }
