@@ -5,6 +5,12 @@ import UserContext from './UserContext';
 // import {Alert} from "react-bootstrap";
 
 function Profile(params) {
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var elems = document.querySelectorAll('.materialboxed');
+        var instances = M.Materialbox.init(elems, {});
+    });
+
     let jwt = localStorage.getItem('jwtToken');
     const {user,login,logout,profile} = useContext(UserContext);
     const [id, setId] = useState(user.id);
@@ -195,7 +201,7 @@ function Profile(params) {
 
                         <div className="row px-2">
                             <div className="col s12">
-                                <img src={user.avatar} width="150" height="150"/>
+                                <img className="materialboxed" src={user.avatar} width="150" height="150"/>
                             </div>
                         </div>
 

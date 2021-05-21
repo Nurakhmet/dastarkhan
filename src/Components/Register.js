@@ -2,9 +2,20 @@ import 'materialize-css/dist/css/materialize.min.css';
 import M from 'materialize-css' ;
 
 import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast, Slide, Zoom, Flip, Bounce  } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Register(params) {
 
+    const notify = () => toast.success('Registration was successfully!', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
     document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('select');
         var instances = M.FormSelect.init(elems, {});
@@ -61,6 +72,7 @@ function Register(params) {
                 setAddress("");
                 setPassword("");
                 setRePassword("");
+                setPhoneNumber("");
             }else if(option === "driver"){
                 setMessage("");
                 addUserD(inputData);
@@ -70,6 +82,7 @@ function Register(params) {
                 setAddress("");
                 setPassword("");
                 setRePassword("");
+                setPhoneNumber("");
             }else if(option === "restaurant"){
                 setMessage("");
                 addUserR(inputData);
@@ -79,6 +92,7 @@ function Register(params) {
                 setAddress("");
                 setPassword("");
                 setRePassword("");
+                setPhoneNumber("");
             }
         }else{
             setSuccess("");
@@ -147,14 +161,6 @@ function Register(params) {
                 <div className="row px-4 py-4">
                     <h5 className="m-auto" style={{color: "white"}}>Create new Account</h5>
                 </div>
-                <div className = "row px-2">
-                    <div className = "alert alert-danger" role="alert" hidden = {message == ""}>
-                        {message}
-                    </div>
-                    <div className = "alert alert-success" role="alert" hidden = {success == ""}>
-                        {success}
-                    </div>
-                </div>
                 <div className="row px-2">
                     <div className="input-field col s12">
                         <i className="material-icons prefix" style = {{color:"#2D4059"}}>account_circle</i>
@@ -213,7 +219,21 @@ function Register(params) {
                 </div>
 
                 <div className="row px-4">
-                    <button className="btn-small waves-effect waves-light" style = {{backgroundColor:"#2D4059", color: "#FFD460"}} type="submit" > <strong>Sign Up</strong> <i class="material-icons right">send</i></button>
+                    <button className="btn-small waves-effect waves-light" style = {{backgroundColor:"#2D4059", color: "#FFD460"}} type="submit"
+                            onClick={notify}
+                    > <strong>Sign Up</strong> <i class="material-icons right">send</i></button>
+                    <ToastContainer
+                        position="top-right"
+                        transition={Flip}
+                        autoClose={2000}
+                        hideProgressBar
+                        newestOnTop
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                    />
                 </div>
             </form>
         </div>

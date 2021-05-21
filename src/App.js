@@ -8,9 +8,12 @@ import Footer from "./Components/Footer";
 
 
 
+
 function App() {
   let jwt = localStorage.getItem('jwtToken');
+
   const {user,login,logout,profile} = useContext(UserContext);
+
 
 
   return (
@@ -18,7 +21,6 @@ function App() {
               <div className="container">
 
                   <UserProvider>
-
                       <Router>
                           <Navbar currentUser={user}/>
                       </Router>

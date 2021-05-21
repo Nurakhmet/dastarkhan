@@ -1,9 +1,9 @@
-import React, { useState,useContext,useEffect } from 'react';
+import React, { useState,useContext,useEffect} from 'react';
 // import './../bootstrap/css/bootstrap.min.css';
 import UserContext from './UserContext';
 // import Logout from "./Logout";
 import Profile from "./Profile";
-import {Redirect, Route, Switch} from "react-router-dom";
+import {Link, Redirect, Route, Switch} from "react-router-dom";
 import Register from "./Register";
 import Login from "./Login";
 import Logout from "./Logout";
@@ -16,30 +16,78 @@ import RestaurantsPage from "./RestaurantsPage";
 import ModerTools from "./ModerTools";
 import Cart from "./Cart";
 import RestDishes from "./RestDishes";
+import DriverTools from "./DriverTools";
+import M from "materialize-css";
+
 
 
 
 
 
 function Navbar({currentUser}){
+
+    const cartFromLocal = JSON.parse(localStorage.getItem('cart') || '[]');
     const {user,login,logout,profile} = useContext(UserContext);
+    const [cart, setCart] = useState(cartFromLocal);
+
+    const addToCart = (product) =>{
+        console.log("added to cart");
+        let newCart = [...cart];
+        let itemInCart = newCart.find(item => product.dishName === item.dishName);
+
+        if (itemInCart){
+            itemInCart.quantity++;
+        }else{
+            itemInCart = {...product,quantity: 1};
+            newCart.push(itemInCart)
+
+        }
+        setCart(newCart);
+    }
+
+    const removeFromCart = (productToRemove) =>{
+        console.log("removed from cart");
+        setCart([cart.filter((product) => product !== productToRemove)]);
+    }
+
+    const onRemove = (product) => {
+        const exist = cart.find((x) => x.id === product.id);
+        if (exist.quantity === 1) {
+            setCart(cart.filter((x) => x.id !== product.id));
+        } else {
+            setCart(
+                cart.map((x) =>
+                    x.id === product.id ? { ...exist, quantity: exist.quantity - 1 } : x
+                )
+            );
+        }
+    };
+
+    const clearCart = () => {
+        console.log("clear the cart");
+        setCart([]);
+    }
+
+    const getCartTotal = () => {
+        console.log("total cart");
+
+        return cart.reduce((sum, {quantity}) => sum + quantity, 0);
+    }
+
+    const setQuantity = (product, amount) => {
+        console.log("total cart");
+
+        const newCart = [...cart];
+        newCart.find(item => item.dishName === product.dishName).quantity = amount;
+        setCart(newCart);
+    }
 
 
 
-    // const onAdd = (dishes) => {
-    //     const exist = cartItems.find(x => x.id === dishes.id);
-    //     if(exist){
-    //         setCartItems(cartItems.map(x => x.id === dishes.id ? {...exist, qty: exist.qty + 1} : x
-    //
-    //         )
-    //         );
-    //     } else {
-    //         setCartItems([...cartItems, {...dishes, qty: 1}])
-    //     }
-    // }
     useEffect(()=>{
         profile();
-    },[]);
+        localStorage.setItem('cart', JSON.stringify(cart));
+    },[cart]);
 
     return(
         <div>
@@ -78,16 +126,26 @@ function Navbar({currentUser}){
                                 :
                                 ""
                             }
+                            {user.roles[0].role == "ROLE_DRIVER" ?
+                                <li className="nav-item">
+                                    {user.auth?<a className="nav-link" style={{color: "#2D4059"}} href={`/drivertools`}> <strong>DriverTools</strong></a>:""}
+                                </li>
+                                :
+                                ""
+                            }
                             <li className="nav-item">
                                 {user.auth?<a className="nav-link" style={{color: "#2D4059"}}  href={`/profile`}> <strong>{user.fullName}</strong></a>:<a className="nav-link" style={{color: "#2D4059"}} href={`/register`}>
                                     <strong>Register</strong>
                                     </a>}
                             </li>
+                            {/*<li className="nav-item">*/}
+                            {/*    <a className="nav-link" style={{color: "#2D4059"}} href={`/cart`}> <strong>Cart {cartItems.length}</strong> </a>*/}
+                            {/*</li>*/}
                             <li className="nav-item">
-                                <a className="nav-link" style={{color: "#2D4059"}} href={`/cart`}> <strong>Cart</strong> </a>
+                                {user.auth?<Logout/>:<a className="nav-link" style={{color: "#2d4059"}} href={`/login`}> <strong>Login</strong> </a>}
                             </li>
                             <li className="nav-item">
-                                {user.auth?<Logout/>:<a className="nav-link" style={{color: "#2D4059"}} href={`/login`}> <strong>Login</strong> </a>}
+                                <Link className="nav-link" style={{color: "#2D4059"}} to={`/cart`}> <strong>Cart <span style={{color: "white",backgroundColor: "#2d4059", borderRadius: "20px", padding: "10px"}} >{getCartTotal()}</span></strong> </Link>
                             </li>
                         </ul>
                 </div>
@@ -102,6 +160,9 @@ function Navbar({currentUser}){
                 <Route path = "/modertools">
                     <ModerTools/>
                 </Route>
+                <Route path = "/drivertools">
+                    <DriverTools/>
+                </Route>
                 <Route path = "/restaurantsPage">
                     <RestaurantsPage/>
                 </Route>
@@ -109,7 +170,7 @@ function Navbar({currentUser}){
                     <Register  />
                 </Route>
                 <Route path = "/restdishes/:restId">
-                    <RestDishes/>
+                    <RestDishes addToCart={addToCart}/>
                 </Route>
                 <Route path = "/login">
                     {user.auth?<Redirect to = "/profile"/>:<Login/> }
@@ -119,10 +180,10 @@ function Navbar({currentUser}){
                 </Route>
 
                 <Route path = "/cart">
-                    <Cart/>
+                    <Cart setCart={setCart} cart={cart} addToCart={addToCart} removeFromCart={removeFromCart} clearCart={clearCart} setQuantity={setQuantity} onRemove={onRemove}/>
                 </Route>
                 <Route path = "/">
-                    <Main/>
+                    <Main addToCart={addToCart}/>
                 </Route>
 
             </Switch>

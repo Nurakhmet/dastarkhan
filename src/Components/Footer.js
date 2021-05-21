@@ -17,8 +17,8 @@ function Footer(params) {
 
     return<div style={{backgroundColor: "#2D4059", color: "white", height: "125px"}}>
         <div className="container">
-            <h2>Footer</h2>
-            <h2>Bir</h2>
+            <p className="pb-2 center" ></p>
+            <p className="pb-2 center" >Food Delivery system</p>
             <p className="pb-2 center" >Copyright {"\u00A9"} dastarkhan.kz 2021</p>
         </div>
     </div>

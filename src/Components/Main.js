@@ -6,10 +6,22 @@ import { Component } from 'react';
 import { render } from '@testing-library/react';
 import UserContext from './UserContext';
 import {Link} from "react-router-dom";
+import { ToastContainer, toast, Slide, Zoom, Flip, Bounce  } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
-function AllSeacrhCards({search}) {
+function AllSeacrhCards(props) {
+    const notify = () => toast.success('Successfully added!', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
+    const { search, addToCart} = props;
     const [dataSearch, setDataSearch] = useState([]);
     const [errorSearch, setErrorSearch] = useState("");
     console.log("GEtSearch", search)
@@ -62,8 +74,21 @@ function AllSeacrhCards({search}) {
                     </div>
                     <div className="card-footer">
                         <button className="waves-effect waves-light mb-2 btn-small right"
-                                style={{backgroundColor: "#2D4059", color: "#FFD460"}} type="submit">
+                                style={{backgroundColor: "#2D4059", color: "#FFD460"}} type="submit"
+                                onClick={() => { addToCart(dishes); notify();}}>
                             <i className="material-icons right">add_shopping_cart</i> <strong>Add to cart</strong></button>
+                        <ToastContainer
+                            position="top-right"
+                            transition={Flip}
+                            autoClose={2000}
+                            hideProgressBar
+                            newestOnTop
+                            closeOnClick
+                            rtl={false}
+                            pauseOnFocusLoss
+                            draggable
+                            pauseOnHover
+                        />
                     </div>
             </div>
         </div>
@@ -77,19 +102,22 @@ function AllSeacrhCards({search}) {
 }
 
 function Card(props){
-    // const [cart, setCart] = useContext(CartContext);
-    const addToCart =() => {
-        const card = {dishName: props.dishName, price: props.price, imageUrl: props.imageUrl, restaurants: props.restaurants.restName};
-        // props.setCart(curr => [...curr, card]);
-
-        // console.log("clicked",props.cart);
-    }
+    const notify = () => toast.success('Successfully added!', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
     return (
         <div className="col-4" key={props.dishes}>
             <div className="card" style={{backgroundColor: "#F07B3F", borderRadius: "20px"}}>
                     <div className="card-content">
                         <div className="row">
                             <div className="col">
+                                {/*img className="materialboxed" width="650" src="images/sample-1.jpg">*/}
                                 <img src={props.imageUrl}
                                      style={{height: "140px", width: "140px", borderRadius: "20px"}}/>
                             </div>
@@ -107,31 +135,41 @@ function Card(props){
                     <div className="card-footer">
 
                         <button className="waves-effect waves-light mb-2 btn-small right"
-                                style={{backgroundColor: "#2D4059", color: "#FFD460"}} onClick={addToCart}>
+                                style={{backgroundColor: "#2D4059", color: "#FFD460"}}
+                                onClick={() => { props.addToCart(props.dishes); notify();}}>
                             <i className="material-icons right">add_shopping_cart</i> <strong>Add to cart</strong></button>
+                        <ToastContainer
+                            position="top-right"
+                            transition={Flip}
+                            autoClose={2000}
+                            hideProgressBar
+                            newestOnTop
+                            closeOnClick
+                            rtl={false}
+                            pauseOnFocusLoss
+                            draggable
+                            pauseOnHover
+                        />
                     </div>
             </div>
+
+
         </div>
     )
 }
 
 function Main(props) {
+
+
+
+    const { addToCart } = props;
     const [search, setSearch] = useState("");
-
-
-
 
 
     document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('.carousel');
         var instances = M.Carousel.init(elems, {fullWidth: true,
             indicators: true, duration: 20, dist: 0});
-
-        // var instance = M.Carousel.init({
-        //     fullWidth: true,
-        //     indicators: true
-        // });
-
     });
 
 
@@ -217,7 +255,7 @@ function Main(props) {
     }, []);
 
     const dish = data?.map((dishes,idx)=>(
-        <Card dishName={dishes.dishName} price={dishes.price} imageUrl={dishes.imageUrl} restaurants={dishes.restaurants} dishes={dishes} />
+        <Card dishName={dishes.dishName} price={dishes.price} imageUrl={dishes.imageUrl} restaurants={dishes.restaurants} dishes={dishes} addToCart={addToCart} />
         // <div className="col-4" key={idx}>
         //     <div className="card" style={{backgroundColor: "#F07B3F", borderRadius: "20px"}}>
         //         <form>
@@ -291,7 +329,7 @@ function Main(props) {
                     </div>
                 </form>
 
-                    {search !== "" ? <AllSeacrhCards search={search}/> :
+                    {search !== "" ? <AllSeacrhCards addToCart={props.addToCart} search={search}/> :
                         <div className="row">{dish}</div>
                     }
 

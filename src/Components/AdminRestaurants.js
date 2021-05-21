@@ -5,6 +5,8 @@ import { Component } from 'react';
 import { render } from '@testing-library/react';
 import UserContext from './UserContext';
 import {Link} from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function AdminRestaurants({newRestaurantAddedId}) {
@@ -150,9 +152,6 @@ function AdminRestaurants({newRestaurantAddedId}) {
             setChange(change+1);
 
         }
-
-
-
     }
 
     useEffect(() => {

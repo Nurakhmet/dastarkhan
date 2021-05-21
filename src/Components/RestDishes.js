@@ -7,6 +7,8 @@ import { render } from '@testing-library/react';
 import UserContext from './UserContext';
 import Restaurants from "./Restaurants";
 import {Link, useParams} from "react-router-dom";
+import { ToastContainer, toast, Slide, Zoom, Flip, Bounce  } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function AllSeacrhCards({search}) {
@@ -76,7 +78,17 @@ function AllSeacrhCards({search}) {
     );
 }
 
-function RestDishes(params) {
+function RestDishes(props) {
+    const notify = () => toast.success('Successfully added!', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
+    const { addToCart } = props;
     let {restId} = useParams();
     console.log(restId);
 
@@ -106,6 +118,7 @@ function RestDishes(params) {
     }
 
     useEffect(() => {
+
         loadData(restId);
     }, []);
 
@@ -115,6 +128,7 @@ function RestDishes(params) {
                     <div className="card-content">
                         <div className="row">
                             <div className="col">
+
                                 <img src={dishes.imageUrl}
                                      style={{height: "140px", width: "140px", borderRadius: "20px"}}/>
                             </div>
@@ -129,8 +143,22 @@ function RestDishes(params) {
                     </div>
                     <div className="card-footer">
                         <button className="waves-effect waves-light btn-small mb-2 right"
-                                style={{backgroundColor: "#2D4059", color: "#FFD460"}} type="submit">
+                                style={{backgroundColor: "#2D4059", color: "#FFD460"}} type="submit"
+                            onClick={() => { addToCart(dishes); notify();}}>
                             <i className="material-icons right">add_shopping_cart</i> <strong>Add to cart</strong></button>
+                        <ToastContainer
+                        position="top-right"
+                        transition={Flip}
+                        autoClose={2000}
+                        hideProgressBar
+                        newestOnTop
+                        closeOnClick
+                        rtl={false}
+                        pauseOnFocusLoss
+                        draggable
+                        pauseOnHover
+                    />
+
                     </div>
             </div>
         </div>

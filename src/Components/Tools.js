@@ -16,6 +16,7 @@ import AdminRestaurants from "./AdminRestaurants";
 import AdminRestDetails from "./AdminRestDetails";
 import AdminDishes from "./AdminDishes";
 import AdminUsers from "./AdminUsers";
+import AdminOrders from "./AdminOrders";
 
 function Tools(params) {
 
@@ -52,6 +53,11 @@ function Tools(params) {
                             <a className="nav-link" style={{color: "#2D4059"}} href={`/tools/dishes`}> <strong>Dishes</strong></a>
                         </th>
                     </tr>
+                    <tr>
+                        <th scope="row">
+                            <a className="nav-link" style={{color: "#2D4059"}} href={`/tools/orders`}> <strong>Orders</strong></a>
+                        </th>
+                    </tr>
                     </tbody>
                 </table>
 
@@ -69,6 +75,7 @@ function Tools(params) {
 
 
 
+
                             <div>
 
                             <Route path="/tools/restaurants">
@@ -77,6 +84,9 @@ function Tools(params) {
                             <Route path="/tools/dishes">
                                 <AdminDishes/>
                             </Route>
+                                <Route path="/tools/orders">
+                                    <AdminOrders/>
+                                </Route>
                                 {/*<Route path = "/tools/restaurants/details/:restId">*/}
                                 {/*    <AdminRestDetails/>*/}
                                 {/*</Route>*/}

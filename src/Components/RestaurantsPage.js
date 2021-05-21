@@ -75,13 +75,13 @@ function AllSeacrhCards({search}) {
 
 function RestaurantsPage(params) {
 
-    const [search, setSearch] = useState("");
-
     document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('.carousel');
         var instances = M.Carousel.init(elems, {fullWidth: true,
             indicators: true, duration: 20, dist: 0});
     });
+
+    const [search, setSearch] = useState("");
 
 
     const user = useContext(UserContext);
@@ -111,6 +111,7 @@ function RestaurantsPage(params) {
 
     useEffect(() => {
         loadData();
+
     }, []);
 
     const rest = data?.map((restaurants,idx)=>(
@@ -142,27 +143,33 @@ function RestaurantsPage(params) {
 
     return <div className = "container">
         <div className = "row mt-3">
+
             <div className="carousel carousel-slider center">
                 <div className="carousel-fixed-item center">
-                    <a className="btn waves-effect white grey-text darken-text-2">button</a>
+                    {/*<a className="btn waves-effect white grey-text darken-text-2">button</a>*/}
                 </div>
-                <div className="carousel-item red white-text" href="#one!">
+                <div className="carousel-item white-text" href="#one!">
+                    <img src="http://instantmeal.000webhostapp.com/assets/img/carousel/carousel1.jpg" alt=""/>
                     <h2>First Panel</h2>
                     <p className="white-text">This is your first panel</p>
                 </div>
                 <div className="carousel-item amber white-text" href="#two!">
+                    <img src="https://happyintlv.net/imagecache/c_crop,h_400,w_1000/wp-content/uploads/2017/05/Grande-article-eat-tlv.png" alt=""/>
                     <h2>Second Panel</h2>
                     <p className="white-text">This is your second panel</p>
                 </div>
                 <div className="carousel-item green white-text" href="#three!">
+                    <img src="https://procudan.com/Admin/Public/GetImage.ashx?width=1600&crop=5&Compression=75&DoNotUpscale=true&image=%2FFiles%2FImages%2FProcudan+Kampagner%2F2020+04+Innovationspartnerskab+for+sundere+mad%2FiStock-650607142_1000_400.jpg" alt=""/>
                     <h2>Third Panel</h2>
                     <p className="white-text">This is your third panel</p>
                 </div>
                 <div className="carousel-item blue white-text" href="#four!">
+                    <img src="https://im.whatshot.in/img/2019/Nov/header-1000x400-1573737476.jpg" alt=""/>
                     <h2>Fourth Panel</h2>
                     <p className="white-text">This is your fourth panel</p>
                 </div>
             </div>
+
             <br/>
             <div className = "col-12 mt-3" style = {{paddingLeft:'0px',paddingRight:'0px'}}>
                 <form>
